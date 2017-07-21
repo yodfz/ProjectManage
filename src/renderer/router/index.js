@@ -16,6 +16,11 @@ export default new Router({
       component: require('@/components/Project')
     },
     {
+      path: '/weekPaper',
+      name: 'weekpaper',
+      component: require('@/components/weekPaper')
+    },
+    {
       path: '*',
       redirect: '/'
     }

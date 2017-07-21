@@ -1,5 +1,16 @@
 <template>
   <div class="index">
+    <MainMenu />
+    <!--<Menu mode="horizontal" active-name="1">-->
+    <!--<Menu-item name="1">-->
+    <!--<Icon type="ios-paper"></Icon>-->
+    <!--项目管理-->
+    <!--</Menu-item>-->
+    <!--<Menu-item name="2">-->
+    <!--<Icon type="ios-people"></Icon>-->
+    <!--开发者管理-->
+    <!--</Menu-item>-->
+    <!--</Menu>-->
     <div class="projects">
       <div class="item" v-for="item in data">
         <div class="title">
@@ -19,9 +30,9 @@
               <Icon type="arrow-down-b"></Icon>
             </a>
             <Dropdown-menu slot="list">
-              <Dropdown-item :name="'users,' + item._id">参与开发者</Dropdown-item>
-              <Dropdown-item :name="'setting,' + item._id">设置</Dropdown-item>
-              <Dropdown-item :name="'tiemline,' + item._id">查看时间线</Dropdown-item>
+              <!--<Dropdown-item :name="'users,' + item._id">参与开发者</Dropdown-item>-->
+              <!--<Dropdown-item :name="'setting,' + item._id">设置</Dropdown-item>-->
+              <!--<Dropdown-item :name="'tiemline,' + item._id">查看时间线</Dropdown-item>-->
               <Dropdown-item :name="'delete,' + item._id">删除项目</Dropdown-item>
             </Dropdown-menu>
           </Dropdown>
@@ -66,8 +77,12 @@
 </template>
 <script type="text/babel">
   import model from '../../model'
+  import MainMenu from './Main/MainMenu.vue'
 
   export default {
+    components: {
+      MainMenu
+    },
     data () {
       return {
         data: [],
@@ -91,7 +106,7 @@
         $item.open = false
       },
       goProject ($item) {
-
+        this.$router.push({path: 'project', query: {id: $item._id}})
       },
       deleteProject ($item) {
         let action = $item.split(',')
@@ -131,19 +146,20 @@
               // count equals to 3
               if (err) {
               }
+              console.log(count)
               let item = that.data.find(d => d._id === p._id)
               if (item) {
                 item.allTodoCount = count
               }
             })
             // 查已完成
-            model.todolist.count({Pid: p._id, status: 1}, function (err, count) {
+            model.todolist.count({Pid: p._id, isSuccess: true}, function (err, count) {
               // count equals to 3
               if (err) {
               }
               let item = that.data.find(d => d._id === p._id)
               if (item) {
-                item.allTodoCount = count
+                item.okTodoCount = count
               }
             })
             // 计算百分比
